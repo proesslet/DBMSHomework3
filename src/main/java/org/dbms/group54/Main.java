@@ -22,5 +22,8 @@ public class Main {
         log.info("Connecting to the database");
         Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
         log.info("Database connection test: " + connection.getCatalog());
+
+
+        connection.close();
     }
 }
