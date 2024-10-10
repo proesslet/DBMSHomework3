@@ -62,6 +62,3 @@ BEGIN
       FROM Faculty;
 END;
 GO
-
-EXEC SelectAllFaculty
-GO
