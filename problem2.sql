@@ -1,19 +1,10 @@
-IF OBJECT_ID('InsertFacultyByDept', 'P') IS NOT NULL
-BEGIN
-    DROP PROCEDURE InsertFacultyByDept;
-END;
+DROP PROCEDURE IF EXISTS InsertFacultyByDept;
 GO
 
-IF OBJECT_ID('InsertFacultyWhereNotDept', 'P') IS NOT NULL
-BEGIN
-    DROP PROCEDURE InsertFacultyWhereNotDept;
-END;
+DROP PROCEDURE IF EXISTS InsertFacultyWhereNotDept;
 GO
 
-IF OBJECT_ID('SelectAllFaculty', 'P') IS NOT NULL
-BEGIN
-    DROP PROCEDURE SelectAllFaculty;
-END;
+DROP PROCEDURE IF EXISTS SelectAllFaculty;
 GO
 
 -- Procedure 1
@@ -28,8 +19,8 @@ BEGIN
 
     -- Calculate the average salary for the department
     SELECT @avg_salary = AVG(salary)
-    FROM Faculty
-    WHERE deptid = @deptid;
+      FROM Faculty
+     WHERE deptid = @deptid;
 
     -- Calculate the new salary according to the logic
     SET @new_salary = CASE
@@ -40,28 +31,27 @@ BEGIN
 
     -- Insert the new faculty member
     INSERT INTO Faculty (fid, fname, deptid, salary)
-    VALUES (@fid, @fname, @deptid, @new_salary);
+         VALUES (@fid, @fname, @deptid, @new_salary);
 END;
 GO
 
 -- Procedure 2
 CREATE PROCEDURE InsertFacultyWhereNotDept
-@fid INTEGER,
-@fname VARCHAR(250),
-@deptid INTEGER,
-@notdept INTEGER
+    @fid INTEGER,
+    @fname VARCHAR(250),
+    @deptid INTEGER,
+    @notdept INTEGER
 AS
 BEGIN
     DECLARE @avg_salary DECIMAL(10, 2);
 
     SELECT @avg_salary = AVG(salary)
-    FROM Faculty
-    WHERE deptid <> @notdept;
+      FROM Faculty
+     WHERE deptid <> @notdept;
 
     -- Insert the new faculty member
     INSERT INTO Faculty (fid, fname, deptid, salary)
-    VALUES (@fid, @fname, @deptid, @avg_salary);
-
+         VALUES (@fid, @fname, @deptid, @avg_salary);
 END;
 GO
 
@@ -70,7 +60,6 @@ AS
 BEGIN
     SELECT *
       FROM Faculty;
-
 END;
 GO
 
