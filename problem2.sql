@@ -1,27 +1,78 @@
-/* insert the fid, fname, deptid, and salary of a new faculty member into table Faculty. The salary is
-computed based on the average faculty salary of his/her department (if the average faculty salary
-is greater than $50,000 then the salary of the new faculty member will be equal to 90% of the
-average faculty salary; if the average faculty salary is less than $30,000, then the salary of the new
-faculty member will be equal to the average faculty salary; otherwise, the salary of the new faculty
-member will be equal to 80% of the average faculty salary).*/
+IF OBJECT_ID('InsertFacultyByDept', 'P') IS NOT NULL
+BEGIN
+    DROP PROCEDURE InsertFacultyByDept;
+END;
+GO
 
-INSERT INTO Faculty (fid, fname, deptid, salary)
-SELECT 11, 'Jeff', 4,
-CASE
-    WHEN avg_salary > 50000 THEN avg_salary * 0.9
-    WHEN avg_salary < 30000 THEN avg_salary
-    ELSE avg_salary * 0.8
-END
+IF OBJECT_ID('InsertFacultyWhereNotDept', 'P') IS NOT NULL
+BEGIN
+    DROP PROCEDURE InsertFacultyWhereNotDept;
+END;
+GO
 
-FROM
-(
-    SELECT AVG(salary) AS avg_salary
+IF OBJECT_ID('SelectAllFaculty', 'P') IS NOT NULL
+BEGIN
+    DROP PROCEDURE SelectAllFaculty;
+END;
+GO
+
+-- Procedure 1
+CREATE PROCEDURE InsertFacultyByDept
+    @fid INT,
+    @fname VARCHAR(250),
+    @deptid INT
+AS
+BEGIN
+    DECLARE @avg_salary DECIMAL(10, 2);
+    DECLARE @new_salary DECIMAL(10, 2);
+
+    -- Calculate the average salary for the department
+    SELECT @avg_salary = AVG(salary)
     FROM Faculty
-    WHERE deptid = 1
-) AS avg_salary_table;
+    WHERE deptid = @deptid;
 
-/* delete the faculty members whose fids are 101, 35000, and 112
-from table Faculty.*/
-DELETE FROM Faculty
-WHERE fid = 100 OR fid = 35000 OR fid = 112 OR fid = 115;
+    -- Calculate the new salary according to the logic
+    SET @new_salary = CASE
+        WHEN @avg_salary > 50000 THEN @avg_salary * 0.9
+        WHEN @avg_salary < 30000 THEN @avg_salary
+        ELSE @avg_salary * 0.8  -- Adjusted to 80% for averages between 30,000 and 50,000
+    END;
 
+    -- Insert the new faculty member
+    INSERT INTO Faculty (fid, fname, deptid, salary)
+    VALUES (@fid, @fname, @deptid, @new_salary);
+END;
+GO
+
+-- Procedure 2
+CREATE PROCEDURE InsertFacultyWhereNotDept
+@fid INTEGER,
+@fname VARCHAR(250),
+@deptid INTEGER,
+@notdept INTEGER
+AS
+BEGIN
+    DECLARE @avg_salary DECIMAL(10, 2);
+
+    SELECT @avg_salary = AVG(salary)
+    FROM Faculty
+    WHERE deptid <> @notdept;
+
+    -- Insert the new faculty member
+    INSERT INTO Faculty (fid, fname, deptid, salary)
+    VALUES (@fid, @fname, @deptid, @avg_salary);
+
+END;
+GO
+
+CREATE PROCEDURE SelectAllFaculty
+AS
+BEGIN
+    SELECT *
+      FROM Faculty;
+
+END;
+GO
+
+EXEC SelectAllFaculty
+GO
