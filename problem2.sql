@@ -1,0 +1,3 @@
+CREATE PROCEDURE InsertFaculty @Fid @Name NVARCHAR(250), 
+AS
+INSERT INTO Faculty 
