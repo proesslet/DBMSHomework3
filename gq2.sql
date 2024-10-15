@@ -1,8 +1,4 @@
--- Primary index on snum to optimize queries involving students
-CREATE INDEX idx_enrolled_snum ON Enrolled(snum);
-
--- Secondary index on cname to optimize queries involving class filtering
-CREATE INDEX idx_enrolled_cname ON Enrolled(cname);
+-- CREATE INDEX idx_enrolled_snum_cname ON Enrolled (snum, cname);
 
 -- Query 2
 SELECT student.sname
@@ -36,3 +32,16 @@ HAVING class.room = 'R128' OR COUNT(enrolled.snum) >= 5;
     JOIN Class c2 ON e2.cname = c2.cname
     WHERE c1.meets_at = c2.meets_at AND e1.cname <> e2.cname
     GROUP BY student.sname;
+
+-- Query 7
+SELECT f.fname FROM Faculty f
+    JOIN Class c ON f.fid = c.fid
+    LEFT JOIN Enrolled e ON c.cname = e.cname
+    GROUP BY f.fname, f.fid HAVING COUNT(e.snum) < 5;
+
+-- Query 9
+DELETE FROM Enrolled
+WHERE snum IN (SELECT snum FROM Student WHERE slevel = 'SR');
+DELETE FROM Student
+WHERE slevel = 'SR';
+SELECT * FROM Student;
