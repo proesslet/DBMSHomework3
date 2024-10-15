@@ -9,12 +9,12 @@ import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-public class Main {
+public class Group54_Problem2_HW3 {
     private static final Logger log; // Logger for the application
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n"); // Set log format
-        log = Logger.getLogger(Main.class.getName()); // Initialize the logger
+        log = Logger.getLogger(Group54_Problem2_HW3.class.getName()); // Initialize the logger
     }
 
     public static void main(String[] args) throws Exception {
@@ -22,7 +22,7 @@ public class Main {
         log.info("Loading application properties"); // Log loading properties
 
         Properties properties = new Properties(); // Load database properties
-        properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties")); // Load properties file
+        properties.load(Group54_Problem2_HW3.class.getClassLoader().getResourceAsStream("application.properties")); // Load properties file
 
         log.info("Connecting to the database"); // Log database connection attempt
         Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties); // Establish connection
