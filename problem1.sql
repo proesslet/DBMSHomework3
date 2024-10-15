@@ -1,5 +1,20 @@
+-- PROBLEM 1
 
+-- GQ1 --------------------------------------------
 
+-- a) Insertion violation uniqueness of primary key
+INSERT INTO Student VALUES (1, 'Adams', 'History', 'FR', 18)
+
+-- b) Insertion violation not-null value of primary key
+INSERT INTO Student VALUES (null, 'Adams', 'History', 'FR', 18)
+
+-- c) Insertion, deletion, and update query violating foreign key constraint
+INSERT INTO Class VALUES ('New Class', 'W 13:30', 'R128', 105)
+DELETE FROM Faculty WHERE fid = 104
+UPDATE Class SET fid = 105
+
+-- d) Retrieval query violates domain constraint
+SELECT snum FROM Student WHERE sname = 16
 
 
 -- GQ2 --------------------------------------------
@@ -12,7 +27,6 @@
 -- Because cname and snum are frequently used, we can create a composite index on the combination of the 
 -- two to optimize performance. This index is a secondary index because neither snum or cname are primary keys, 
 -- but foreign keys that reference another table’s primary keys.
-
 
 
 -- Query 2
