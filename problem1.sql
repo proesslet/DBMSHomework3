@@ -1,4 +1,19 @@
+
+
+
+
+-- GQ2 --------------------------------------------
+
 -- CREATE INDEX idx_enrolled_snum_cname ON Enrolled (snum, cname);
+
+-- After reviewing the SQL queries, we decided the Enroll table would be a good candidate for indexing. 
+-- Specifically, it is used frequently in JOIN operations and accessed in queries 2, 3, 4, 5, 7, and 9.
+
+-- Because cname and snum are frequently used, we can create a composite index on the combination of the 
+-- two to optimize performance. This index is a secondary index because neither snum or cname are primary keys, 
+-- but foreign keys that reference another table’s primary keys.
+
+
 
 -- Query 2
 SELECT student.sname
