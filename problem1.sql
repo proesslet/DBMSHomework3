@@ -1,5 +1,4 @@
 -- PROBLEM 1
-
 -- GQ1 --------------------------------------------
 
 -- a) Insertion violation uniqueness of primary key
@@ -15,7 +14,6 @@ UPDATE Class SET fid = 105
 
 -- d) Retrieval query violates domain constraint
 SELECT snum FROM Student WHERE sname = 16
-
 
 -- GQ2 --------------------------------------------
 
@@ -37,7 +35,6 @@ JOIN Class class ON enrolled.cname = class.cname
 JOIN Faculty faculty ON class.fid = faculty.fid
 WHERE student.slevel = 'JR' AND faculty.fname = 'Johnson'
 GROUP BY student.sname, student.snum;
-
 
 -- Query 3
 SELECT MAX(student.age) AS oldest_age
